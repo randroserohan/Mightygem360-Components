@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8">
 
-<!-- Model Viewer -->
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
 <style>
 body {
   margin: 0;
-  background: transparent;
+  background: #000;  /* FIX: White screen removed */
   font-family: Arial;
 }
 
@@ -99,16 +98,11 @@ body {
 
 <body>
 
-<!-- 3D MODEL (FIXED GLB PATH ✔) -->
 <model-viewer id="mg-3d"
   src="https://cdn.jsdelivr.net/gh/randroserohan/Mightygem360-Components@master/base_basic_pbr.glb"
-  auto-rotate
-  camera-controls
-  interaction-prompt="none"
-  shadow-intensity="1">
+  auto-rotate camera-controls interaction-prompt="none" shadow-intensity="1">
 </model-viewer>
 
-<!-- WIDGET PREVIEW -->
 <div id="mg-widget">
   <div style="padding:16px;background:rgba(0,0,0,0.3);display:flex;justify-content:space-between;">
     <div style="width:36px;height:36px;border-radius:10px;
@@ -133,7 +127,6 @@ body {
   </div>
 </div>
 
-<!-- CHAT WINDOW -->
 <div id="chat-win">
   <div style="padding:14px;background:rgba(0,0,0,0.3);display:flex;justify-content:space-between;">
     MightyGEM AI
@@ -149,7 +142,6 @@ body {
 </div>
 
 <script>
-// CONNECT HTML ELEMENTS
 const mg3d = document.getElementById("mg-3d");
 const mgWidget = document.getElementById("mg-widget");
 const chatWin = document.getElementById("chat-win");
@@ -160,17 +152,9 @@ const messages = document.getElementById("messages");
 const inputField = document.getElementById("inputField");
 const sendBtn = document.getElementById("sendBtn");
 
-// SHOW PREVIEW
-mg3d.onclick = () => {
-  mgWidget.style.display = "block";
-};
+mg3d.onclick = () => mgWidget.style.display = "block";
+closePreview.onclick = () => mgWidget.style.display = "none";
 
-// CLOSE PREVIEW
-closePreview.onclick = () => {
-  mgWidget.style.display = "none";
-};
-
-// OPEN CHAT
 openChat.onclick = () => {
   mgWidget.style.display = "none";
   chatWin.style.display = "flex";
@@ -178,12 +162,8 @@ openChat.onclick = () => {
     '<div class="bubble ai">Hello! 👋<br>How can I help you today?</div>';
 };
 
-// CLOSE CHAT
-closeChat.onclick = () => {
-  chatWin.style.display = "none";
-};
+closeChat.onclick = () => chatWin.style.display = "none";
 
-// SEND MESSAGE
 sendBtn.onclick = () => {
   let text = inputField.value.trim();
   if (!text) return;
