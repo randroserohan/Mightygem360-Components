@@ -99,7 +99,7 @@ body {
 
 <body>
 
-<!-- 3D MODEL -->
+<!-- 3D MODEL (FIXED GLB PATH ✔) -->
 <model-viewer id="mg-3d"
   src="https://cdn.jsdelivr.net/gh/randroserohan/Mightygem360-Components@master/base_basic_pbr.glb"
   auto-rotate
@@ -107,7 +107,6 @@ body {
   interaction-prompt="none"
   shadow-intensity="1">
 </model-viewer>
-
 
 <!-- WIDGET PREVIEW -->
 <div id="mg-widget">
@@ -134,7 +133,6 @@ body {
   </div>
 </div>
 
-
 <!-- CHAT WINDOW -->
 <div id="chat-win">
   <div style="padding:14px;background:rgba(0,0,0,0.3);display:flex;justify-content:space-between;">
@@ -151,7 +149,7 @@ body {
 </div>
 
 <script>
-// CONNECT ELEMENTS
+// CONNECT HTML ELEMENTS
 const mg3d = document.getElementById("mg-3d");
 const mgWidget = document.getElementById("mg-widget");
 const chatWin = document.getElementById("chat-win");
@@ -176,7 +174,6 @@ closePreview.onclick = () => {
 openChat.onclick = () => {
   mgWidget.style.display = "none";
   chatWin.style.display = "flex";
-
   messages.innerHTML =
     '<div class="bubble ai">Hello! 👋<br>How can I help you today?</div>';
 };
