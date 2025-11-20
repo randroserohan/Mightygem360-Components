@@ -2,96 +2,29 @@
 <html>
 <head>
 <meta charset="UTF-8">
-
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
 <style>
 body {
   margin: 0;
-  background: #000;  /* FIX: White screen removed */
-  font-family: Arial;
-}
-
-@keyframes mgFloat {
-  0%,100% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
+  background: black;
+  overflow: hidden;
 }
 
 #mg-3d {
   position: fixed;
-  right: 0px;
-  bottom: 0px;
-  width: 140px;
-  height: 140px;
+  right: 20px;
+  bottom: 20px;
+  width: 160px;
+  height: 160px;
   cursor: pointer;
+  animation: float 3s ease-in-out infinite;
   filter: drop-shadow(0 0 25px rgba(255,230,110,0.7));
-  animation: mgFloat 3s ease-in-out infinite;
-  z-index: 999999;
+  z-index: 99999;
 }
 
-#mg-widget, #chat-win {
-  position: fixed;
-  right: 10px;
-  bottom: 160px;
-  background: radial-gradient(circle at top, #3b1f47, #0d0b26, #02020A);
-  border-radius: 22px;
-  color: white;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.7);
-  border: 1px solid rgba(255,255,255,0.1);
-  overflow: hidden;
-  font-family: Arial;
-}
-
-#mg-widget {
-  width: 360px;
-  height: 520px;
-  display: none;
-}
-
-#chat-win {
-  width: 420px;
-  height: 560px;
-  display: none;
-}
-
-.messages {
-  flex: 1;
-  padding: 16px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.bubble {
-  padding: 12px 16px;
-  border-radius: 16px;
-  max-width: 75%;
-}
-.user { background:#f7b043;color:black;margin-left:auto; }
-.ai { background:#2f2a45;color:white; }
-
-.input-area {
-  padding: 12px;
-  display: flex;
-  gap: 10px;
-  background: rgba(0,0,0,0.25);
-}
-.input-area input {
-  flex: 1;
-  padding: 12px;
-  border-radius: 26px;
-  border: 1px solid rgba(255,255,255,0.2);
-  background: rgba(255,255,255,0.12);
-  color: white;
-}
-
-.send-btn {
-  background: #f7b043;
-  border: none;
-  padding: 14px;
-  border-radius: 50%;
-  cursor: pointer;
+@keyframes float {
+  50% { transform: translateY(-8px); }
 }
 </style>
 </head>
@@ -99,85 +32,9 @@ body {
 <body>
 
 <model-viewer id="mg-3d"
-  src="https://cdn.jsdelivr.net/gh/randroserohan/Mightygem360-Components@master/base_basic_pbr.glb"
-  auto-rotate camera-controls interaction-prompt="none" shadow-intensity="1">
+  src="https://raw.githubusercontent.com/randroserohan/Mightygem360-Components/master/base_basic_pbr.glb"
+  auto-rotate camera-controls shadow-intensity="1">
 </model-viewer>
-
-<div id="mg-widget">
-  <div style="padding:16px;background:rgba(0,0,0,0.3);display:flex;justify-content:space-between;">
-    <div style="width:36px;height:36px;border-radius:10px;
-      background:url('https://raw.githubusercontent.com/randroserohan/Logo/master/MG360%20Logo%20Gradient%20Gold%20for%20WEB%20148%20x%20105.png');
-      background-size:cover;"></div>
-    <div id="close-preview" style="cursor:pointer;font-size:22px;">✕</div>
-  </div>
-
-  <div style="padding:16px;">
-    <b>MightyGEM AI</b> 🟢 Online<br>
-    Hello! How may I help you?
-    <button id="open-chat" style="
-      width:100%;padding:14px;margin-top:12px;border-radius:12px;
-      background:linear-gradient(135deg,#4f46e5,#8b5cf6);
-      color:white;border:none;cursor:pointer;">
-      Let's Chat ➤
-    </button>
-  </div>
-
-  <div style="margin-top:auto;padding:12px;font-size:12px;text-align:center;color:#bbb;">
-    Powered by MightyGEM360
-  </div>
-</div>
-
-<div id="chat-win">
-  <div style="padding:14px;background:rgba(0,0,0,0.3);display:flex;justify-content:space-between;">
-    MightyGEM AI
-    <span id="close-chat" style="cursor:pointer;font-size:22px;">✕</span>
-  </div>
-
-  <div class="messages" id="messages"></div>
-
-  <div class="input-area">
-    <input id="inputField" placeholder="Type message...">
-    <button class="send-btn" id="sendBtn">➤</button>
-  </div>
-</div>
-
-<script>
-const mg3d = document.getElementById("mg-3d");
-const mgWidget = document.getElementById("mg-widget");
-const chatWin = document.getElementById("chat-win");
-const closePreview = document.getElementById("close-preview");
-const openChat = document.getElementById("open-chat");
-const closeChat = document.getElementById("close-chat");
-const messages = document.getElementById("messages");
-const inputField = document.getElementById("inputField");
-const sendBtn = document.getElementById("sendBtn");
-
-mg3d.onclick = () => mgWidget.style.display = "block";
-closePreview.onclick = () => mgWidget.style.display = "none";
-
-openChat.onclick = () => {
-  mgWidget.style.display = "none";
-  chatWin.style.display = "flex";
-  messages.innerHTML =
-    '<div class="bubble ai">Hello! 👋<br>How can I help you today?</div>';
-};
-
-closeChat.onclick = () => chatWin.style.display = "none";
-
-sendBtn.onclick = () => {
-  let text = inputField.value.trim();
-  if (!text) return;
-
-  messages.innerHTML += `<div class="bubble user">${text}</div>`;
-  inputField.value = "";
-  messages.scrollTop = messages.scrollHeight;
-
-  setTimeout(() => {
-    messages.innerHTML += `<div class="bubble ai">You said: ${text}</div>`;
-    messages.scrollTop = messages.scrollHeight;
-  }, 600);
-};
-</script>
 
 </body>
 </html>
